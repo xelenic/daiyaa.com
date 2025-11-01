@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Contact Us - Daiyaa Restaurant</title>
+@extends('layouts.app')
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@section('title', 'Contact Us - ' . setting('site_name'))
+@section('description', 'Get in touch with ' . setting('site_name') . '. Visit us at ' . setting('contact_address') . ' or call ' . setting('contact_phone'))
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <style>
+@section('styles')
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -228,11 +220,9 @@
             }
         }
     </style>
-</head>
-<body>
-    <!-- Navigation -->
-    @include('components.navbar')
+@endsection
 
+@section('content')
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
@@ -247,75 +237,127 @@
         <p class="section-subtitle">Visit us, call us, or send us a message</p>
 
         <div class="contact-grid">
+            <!-- Location Card -->
             <div class="contact-card">
                 <div class="contact-icon">
                     <i class="bi bi-geo-alt-fill"></i>
                 </div>
                 <h3>Our Location</h3>
                 <p>
-                    Main Street<br>
-                    Wellawaya City<br>
-                    Sri Lanka
+                    {{ setting('contact_address') }}<br>
+                    @if(setting('contact_city'))
+                        {{ setting('contact_city') }}
+                        @if(setting('contact_postal_code'))
+                            , {{ setting('contact_postal_code') }}
+                        @endif
+                        <br>
+                    @endif
+                    {{ setting('contact_country', 'Sri Lanka') }}
                 </p>
+                
+                @if(setting('contact_map_latitude') && setting('contact_map_longitude'))
+                    <a href="https://www.google.com/maps?q={{ setting('contact_map_latitude') }},{{ setting('contact_map_longitude') }}" 
+                       target="_blank" 
+                       style="display: inline-block; margin-top: 1rem; color: var(--primary-gold);">
+                        <i class="bi bi-pin-map"></i> View on Google Maps
+                    </a>
+                @endif
             </div>
 
+            <!-- Phone & Email Card -->
             <div class="contact-card">
                 <div class="contact-icon">
                     <i class="bi bi-telephone-fill"></i>
                 </div>
                 <h3>Phone & Email</h3>
                 <p>
-                    Phone: <a href="tel:+94552234567">+94 55 223 4567</a><br>
-                    Email: <a href="mailto:info@daiyaa.lk">info@daiyaa.lk</a><br>
-                    WhatsApp: <a href="https://wa.me/94552234567">+94 55 223 4567</a>
+                    @if(setting('contact_phone'))
+                        <strong>Primary:</strong> <a href="tel:{{ setting('contact_phone') }}">{{ setting('contact_phone') }}</a><br>
+                    @endif
+                    
+                    @if(setting('contact_phone_secondary'))
+                        <strong>Secondary:</strong> <a href="tel:{{ setting('contact_phone_secondary') }}">{{ setting('contact_phone_secondary') }}</a><br>
+                    @endif
+                    
+                    @if(setting('contact_email'))
+                        <strong>Email:</strong> <a href="mailto:{{ setting('contact_email') }}">{{ setting('contact_email') }}</a><br>
+                    @endif
+                    
+                    @if(setting('contact_whatsapp'))
+                        <strong>WhatsApp:</strong> <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', setting('contact_whatsapp')) }}" target="_blank">
+                            {{ setting('contact_whatsapp') }}
+                        </a>
+                    @endif
                 </p>
             </div>
 
+            <!-- Opening Hours Card -->
             <div class="contact-card">
                 <div class="contact-icon">
                     <i class="bi bi-clock-fill"></i>
                 </div>
                 <h3>Opening Hours</h3>
                 <p>
-                    Monday - Sunday<br>
-                    10:00 AM - 11:00 PM<br>
-                    <strong style="color: var(--primary-gold);">Open Every Day</strong>
+                    {{ setting('hours_days', 'Monday - Sunday') }}<br>
+                    {{ setting('hours_open', '10:00 AM') }} - {{ setting('hours_close', '11:00 PM') }}<br>
+                    @if(setting('hours_special_note'))
+                        <strong style="color: var(--primary-gold);">{{ setting('hours_special_note') }}</strong>
+                    @endif
                 </p>
             </div>
+        </div>
+        
+        <!-- Social Media Section -->
+        <div style="text-align: center; margin-top: 3rem;">
+            <h3 style="color: var(--primary-gold); margin-bottom: 1.5rem;">Follow Us On Social Media</h3>
+            <x-social-links iconSize="2rem" />
         </div>
     </section>
 
     <!-- Map Section -->
-    <section class="map-section">
-        <div class="map-container">
-            <h2 class="section-title">Find Us</h2>
-            <p class="section-subtitle">Located in the heart of Wellawaya</p>
-            
-            <div class="map-placeholder">
-                <i class="bi bi-pin-map-fill"></i>
-                <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">We're Located at Main Street, Wellawaya</h3>
-                <p style="color: var(--text-secondary);">
-                    Easily accessible from anywhere in the city<br>
-                    Free parking available
-                </p>
+    @if(setting('contact_map_embed_url'))
+        <section class="map-section">
+            <div class="map-container">
+                <h2 class="section-title">Find Us</h2>
+                <p class="section-subtitle">Located in {{ setting('contact_city', 'Wellawaya') }}</p>
+                
+                <div style="border-radius: 15px; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.2);">
+                    <iframe 
+                        src="{{ setting('contact_map_embed_url') }}" 
+                        width="100%" 
+                        height="450" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="logo">DAIYAA</div>
-        <div class="social-links">
-            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-            <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
-            <a href="https://wa.me/94552234567" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-        </div>
-        <p class="footer-text">
-            &copy; 2025 Daiyaa Restaurant. All rights reserved.<br>
-            Crafted with <i class="bi bi-heart-fill" style="color: var(--accent-red);"></i> in Wellawaya, Sri Lanka
-        </p>
-    </footer>
-</body>
-</html>
+        </section>
+    @else
+        <section class="map-section">
+            <div class="map-container">
+                <h2 class="section-title">Find Us</h2>
+                <p class="section-subtitle">Located in {{ setting('contact_city', 'Wellawaya') }}</p>
+                
+                <div class="map-placeholder">
+                    <i class="bi bi-pin-map-fill"></i>
+                    <h3 style="color: var(--primary-gold); margin-bottom: 1rem;">
+                        We're Located at {{ setting('contact_address') }}
+                    </h3>
+                    <p style="color: var(--text-secondary);">
+                        Easily accessible from anywhere in the city<br>
+                        @if(setting('contact_map_latitude') && setting('contact_map_longitude'))
+                            <a href="https://www.google.com/maps?q={{ setting('contact_map_latitude') }},{{ setting('contact_map_longitude') }}" 
+                               target="_blank" 
+                               style="color: var(--primary-gold); margin-top: 1rem; display: inline-block;">
+                                <i class="bi bi-pin-map"></i> Get Directions
+                            </a>
+                        @endif
+                    </p>
+                </div>
+            </div>
+        </section>
+    @endif
+@endsection
 

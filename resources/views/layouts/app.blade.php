@@ -1,16 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ setting('site_language', 'en') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Daiyaa Restaurant - Online Food Delivery')</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>@yield('title', setting('seo_title', setting('site_name')))</title>
+    <meta name="description" content="@yield('description', setting('seo_description', setting('site_description')))">
+    <meta name="keywords" content="{{ setting('seo_keywords') }}">
+    <meta name="author" content="{{ setting('site_name') }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@yield('title', setting('seo_title'))">
+    <meta property="og:description" content="@yield('description', setting('seo_description'))">
+    <meta property="og:site_name" content="{{ setting('site_name') }}">
+    @if(setting('seo_og_image'))
+        <meta property="og:image" content="{{ url(setting('seo_og_image')) }}">
+    @endif
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', setting('seo_title'))">
+    <meta name="twitter:description" content="@yield('description', setting('seo_description'))">
+    
+    <!-- Favicon -->
+    @if(setting('site_favicon'))
+        <link rel="icon" href="{{ setting('site_favicon') }}">
+        <link rel="apple-touch-icon" href="{{ setting('site_favicon') }}">
+    @endif
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Google Analytics -->
+    @if(setting('seo_google_analytics_id'))
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ setting('seo_google_analytics_id') }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ setting('seo_google_analytics_id') }}');
+        </script>
+    @endif
+    
+    <!-- Google Tag Manager -->
+    @if(setting('seo_google_tag_manager_id'))
+        <script>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','{{ setting('seo_google_tag_manager_id') }}');
+        </script>
+    @endif
+    
+    <!-- Facebook Pixel -->
+    @if(setting('seo_facebook_pixel_id'))
+        <script>
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '{{ setting('seo_facebook_pixel_id') }}');
+            fbq('track', 'PageView');
+        </script>
+        <noscript>
+            <img height="1" width="1" style="display:none"
+                 src="https://www.facebook.com/tr?id={{ setting('seo_facebook_pixel_id') }}&ev=PageView&noscript=1"/>
+        </noscript>
+    @endif
     
     <style>
         * {
@@ -243,10 +310,46 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="logo" style="font-size: 2rem; margin-bottom: 1rem;">DAIYAA</div>
-        <p class="footer-text">
-            &copy; {{ date('Y') }} Daiyaa Restaurant. All rights reserved.<br>
-            Wellawaya City, Sri Lanka | <a href="tel:+94552234567" style="color: var(--primary-gold);">+94 55 223 4567</a>
+        @if(setting('site_logo'))
+            <div style="margin-bottom: 1rem;">
+                <img src="{{ setting('site_logo') }}" alt="{{ setting('site_name') }}" style="max-height: 60px;">
+            </div>
+        @else
+            <div class="logo" style="font-size: 2rem; margin-bottom: 1rem;">{{ strtoupper(setting('site_name', 'DAIYAA')) }}</div>
+        @endif
+        
+        <p class="footer-text" style="margin-bottom: 0.5rem;">
+            {{ setting('site_tagline') }}
+        </p>
+        
+        <!-- Contact Info -->
+        <p class="footer-text" style="margin-bottom: 1rem;">
+            @if(setting('contact_address'))
+                {{ setting('contact_address') }}<br>
+            @endif
+            @if(setting('contact_phone'))
+                <a href="tel:{{ setting('contact_phone') }}" style="color: var(--primary-gold); text-decoration: none;">
+                    {{ setting('contact_phone') }}
+                </a>
+            @endif
+            @if(setting('contact_phone') && setting('contact_email'))
+                |
+            @endif
+            @if(setting('contact_email'))
+                <a href="mailto:{{ setting('contact_email') }}" style="color: var(--primary-gold); text-decoration: none;">
+                    {{ setting('contact_email') }}
+                </a>
+            @endif
+        </p>
+        
+        <!-- Social Links -->
+        <div style="margin-bottom: 1.5rem;">
+            <x-social-links iconSize="1.5rem" />
+        </div>
+        
+        <!-- Copyright -->
+        <p class="footer-text" style="font-size: 0.875rem;">
+            {{ setting('site_footer_text', '© ' . date('Y') . ' ' . setting('site_name') . '. All rights reserved.') }}
         </p>
     </footer>
 
