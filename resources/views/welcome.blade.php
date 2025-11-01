@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Daiyaa Restaurant - Authentic Sri Lankan Cuisine in Wellawaya</title>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
+
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
+
     <style>
         * {
             margin: 0;
@@ -120,7 +118,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
                         url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&q=80') center/cover;
             background-attachment: fixed;
         }
@@ -203,9 +201,10 @@
             margin-bottom: 1rem;
             color: var(--primary-gold);
             position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
+            width: 100%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .section-title::after {
@@ -224,6 +223,75 @@
             color: var(--text-secondary);
             margin-bottom: 4rem;
             font-size: 1.1rem;
+        }
+
+        /* CSS Fade Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .fade-in-down {
+            animation: fadeInDown 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .zoom-in {
+            animation: zoomIn 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Stagger animation delays */
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+        .delay-700 { animation-delay: 0.7s; }
+        .delay-800 { animation-delay: 0.8s; }
+
+        /* Specific fix for h2 section titles */
+        .section h2.section-title,
+        #menu h2.section-title {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            width: 100% !important;
+            display: block !important;
         }
 
         /* About Section */
@@ -474,8 +542,7 @@
         .scroll-indicator {
             position: absolute;
             bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+
             animation: bounce 2s infinite;
         }
 
@@ -484,25 +551,12 @@
             color: var(--primary-gold);
         }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0) translateX(-50%);
-            }
-            40% {
-                transform: translateY(-20px) translateX(-50%);
-            }
-            60% {
-                transform: translateY(-10px) translateX(-50%);
-            }
-        }
+
 
         /* Floating Animation */
         @keyframes float {
             0%, 100% {
                 transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
             }
         }
 
@@ -518,16 +572,16 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <p class="hero-subtitle" data-aos="fade-down">Welcome To</p>
-            <h1 data-aos="zoom-in" data-aos-delay="200">DAIYAA</h1>
-            <div class="hero-location" data-aos="fade-up" data-aos-delay="400">
+            <p class="hero-subtitle fade-in-down">Welcome To</p>
+            <h1 class="zoom-in delay-200">DAIYAA</h1>
+            <div class="hero-location fade-in delay-400">
                 <i class="bi bi-geo-alt-fill"></i>
                 <span>Wellawaya City, Sri Lanka</span>
             </div>
-            <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;" data-aos="fade-up" data-aos-delay="600">
+            <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;" class="fade-in delay-600">
                 Experience Authentic Sri Lankan Flavors in the Heart of Wellawaya
             </p>
-            <div data-aos="fade-up" data-aos-delay="800">
+            <div class="fade-in delay-800">
                 <a href="{{ route('menu.index') }}" class="btn">
                     <i class="bi bi-basket"></i> Order Online
                 </a>
@@ -541,26 +595,26 @@
 
     <!-- About Section -->
     <section class="section" id="about">
-        <h2 class="section-title" data-aos="fade-up">About Us</h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="section-title fade-in">About Us</h2>
+        <p class="section-subtitle fade-in delay-100">
             Discover the authentic taste of Sri Lankan cuisine
         </p>
         <div class="about-grid">
-            <div class="about-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="about-card fade-in delay-200">
                 <div class="about-icon float">
                     <i class="bi bi-award-fill"></i>
                 </div>
                 <h3>Premium Quality</h3>
                 <p>We use only the finest, freshest ingredients sourced from local farmers and suppliers to ensure every dish is exceptional.</p>
             </div>
-            <div class="about-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="about-card fade-in delay-400">
                 <div class="about-icon float">
                     <i class="bi bi-people-fill"></i>
                 </div>
                 <h3>Expert Chefs</h3>
                 <p>Our experienced chefs bring generations of culinary expertise, crafting traditional Sri Lankan dishes with passion and precision.</p>
             </div>
-            <div class="about-card" data-aos="fade-up" data-aos-delay="600">
+            <div class="about-card fade-in delay-600">
                 <div class="about-icon float">
                     <i class="bi bi-heart-fill"></i>
                 </div>
@@ -572,12 +626,12 @@
 
     <!-- Menu Section -->
     <section class="section" id="menu">
-        <h2 class="section-title" data-aos="fade-up">Our Signature Dishes</h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="section-title fade-in">Our Signature Dishes</h2>
+        <p class="section-subtitle fade-in delay-100">
             Taste the finest selection of Sri Lankan delicacies
         </p>
         <div class="menu-grid">
-            <div class="menu-item" data-aos="fade-up" data-aos-delay="200">
+            <div class="menu-item fade-in delay-200">
                 <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&q=80" alt="Rice and Curry">
                 <div class="menu-info">
                     <div class="menu-header">
@@ -587,7 +641,7 @@
                     <p>Traditional Sri Lankan rice with multiple curry varieties, dhal, and sambols</p>
                 </div>
             </div>
-            <div class="menu-item" data-aos="fade-up" data-aos-delay="300">
+            <div class="menu-item fade-in delay-300">
                 <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80" alt="Kottu Roti">
                 <div class="menu-info">
                     <div class="menu-header">
@@ -597,7 +651,7 @@
                     <p>Chopped roti stir-fried with vegetables, eggs, and your choice of meat</p>
                 </div>
             </div>
-            <div class="menu-item" data-aos="fade-up" data-aos-delay="400">
+            <div class="menu-item fade-in delay-400">
                 <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=600&q=80" alt="Hoppers">
                 <div class="menu-info">
                     <div class="menu-header">
@@ -607,7 +661,7 @@
                     <p>Crispy bowl-shaped pancakes served with coconut sambol and spicy curry</p>
                 </div>
             </div>
-            <div class="menu-item" data-aos="fade-up" data-aos-delay="500">
+            <div class="menu-item fade-in delay-500">
                 <img src="https://images.unsplash.com/photo-1567337710282-00d59b1d8a77?w=600&q=80" alt="Seafood Platter">
                 <div class="menu-info">
                     <div class="menu-header">
@@ -617,7 +671,7 @@
                     <p>Fresh catch of the day with prawns, calamari, and fish in aromatic spices</p>
                 </div>
             </div>
-            <div class="menu-item" data-aos="fade-up" data-aos-delay="600">
+            <div class="menu-item fade-in delay-600">
                 <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=600&q=80" alt="Lamprais">
                 <div class="menu-info">
                     <div class="menu-header">
@@ -627,7 +681,7 @@
                     <p>Dutch-Burgher specialty: rice, meat, sambols wrapped in banana leaf</p>
                 </div>
             </div>
-            <div class="menu-item" data-aos="fade-up" data-aos-delay="700">
+            <div class="menu-item fade-in delay-700">
                 <img src="https://images.unsplash.com/photo-1626804475297-41608ea09aeb?w=600&q=80" alt="Curd and Treacle">
                 <div class="menu-info">
                     <div class="menu-header">
@@ -642,42 +696,42 @@
 
     <!-- Gallery Section -->
     <section class="section gallery" id="gallery">
-        <h2 class="section-title" data-aos="fade-up">Gallery</h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="section-title fade-in">Gallery</h2>
+        <p class="section-subtitle fade-in delay-100">
             A glimpse into our culinary journey
         </p>
         <div class="gallery-grid">
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+            <div class="gallery-item zoom-in delay-200">
                 <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&q=80" alt="Restaurant Interior">
                 <div class="gallery-overlay">
                     <h4>Elegant Ambiance</h4>
                 </div>
             </div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+            <div class="gallery-item zoom-in delay-300">
                 <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Fine Dining">
                 <div class="gallery-overlay">
                     <h4>Fine Dining Experience</h4>
                 </div>
             </div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400">
+            <div class="gallery-item zoom-in delay-400">
                 <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" alt="Gourmet Food">
                 <div class="gallery-overlay">
                     <h4>Gourmet Delights</h4>
                 </div>
             </div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500">
+            <div class="gallery-item zoom-in delay-500">
                 <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Chef Cooking">
                 <div class="gallery-overlay">
                     <h4>Chef's Special</h4>
                 </div>
             </div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="600">
+            <div class="gallery-item zoom-in delay-600">
                 <img src="https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=600&q=80" alt="Desserts">
                 <div class="gallery-overlay">
                     <h4>Sweet Endings</h4>
                 </div>
             </div>
-            <div class="gallery-item" data-aos="zoom-in" data-aos-delay="700">
+            <div class="gallery-item zoom-in delay-700">
                 <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80" alt="Outdoor Dining">
                 <div class="gallery-overlay">
                     <h4>Al Fresco Dining</h4>
@@ -688,26 +742,26 @@
 
     <!-- Contact Section -->
     <section class="section" id="contact">
-        <h2 class="section-title" data-aos="fade-up">Visit Us</h2>
-        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="section-title fade-in">Visit Us</h2>
+        <p class="section-subtitle fade-in delay-100">
             We'd love to serve you
         </p>
         <div class="contact-grid">
-            <div class="contact-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="contact-card fade-in delay-200">
                 <div class="contact-icon">
                     <i class="bi bi-geo-alt-fill"></i>
                 </div>
                 <h3>Location</h3>
                 <p>Main Street<br>Wellawaya City<br>Sri Lanka</p>
             </div>
-            <div class="contact-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="contact-card fade-in delay-300">
                 <div class="contact-icon">
                     <i class="bi bi-clock-fill"></i>
                 </div>
                 <h3>Opening Hours</h3>
                 <p>Monday - Sunday<br>10:00 AM - 11:00 PM<br>No Holidays</p>
             </div>
-            <div class="contact-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="contact-card fade-in delay-400">
                 <div class="contact-icon">
                     <i class="bi bi-telephone-fill"></i>
                 </div>
@@ -735,17 +789,7 @@
         </p>
     </footer>
 
-    <!-- AOS Animation Library JS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
     <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 100
-        });
-
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {

@@ -160,7 +160,7 @@
             <li><a href="{{ route('home') }}#about">About</a></li>
             <li><a href="{{ route('menu.index') }}">Order Online</a></li>
             <li><a href="{{ route('home') }}#gallery">Gallery</a></li>
-            <li><a href="{{ route('home') }}#contact">Contact</a></li>
+            <li><a href="{{ route('contact') }}">Contact</a></li>
             @auth
                 <li><a href="{{ route('orders.index') }}">My Orders</a></li>
                 <li>

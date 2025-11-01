@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuItemController as AdminMenuItemController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
@@ -13,6 +14,8 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {

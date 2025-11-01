@@ -257,12 +257,107 @@
             color: var(--danger);
         }
 
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1.5rem;
+            left: 1rem;
+            z-index: 1001;
+            background: var(--primary-gold);
+            border: none;
+            color: var(--dark-bg);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 968px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding-left: 4rem;
+            }
+
+            .page-title {
+                font-size: 1.2rem;
+            }
+
+            .container-admin {
+                padding: 1.5rem;
+            }
+
+            .table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .container-admin {
+                padding: 1rem;
+            }
+        }
+
         @yield('styles')
     </style>
 </head>
 <body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ route('admin.dashboard') }}" class="logo">DAIYAA</a>
             <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">Admin Panel</p>
@@ -331,6 +426,52 @@
             @yield('content')
         </div>
     </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        if (mobileMenuToggle && sidebar && sidebarOverlay) {
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                sidebarOverlay.classList.toggle('active');
+                
+                const icon = this.querySelector('i');
+                if (sidebar.classList.contains('active')) {
+                    icon.classList.remove('bi-list');
+                    icon.classList.add('bi-x');
+                } else {
+                    icon.classList.remove('bi-x');
+                    icon.classList.add('bi-list');
+                }
+            });
+
+            // Close sidebar when clicking overlay
+            sidebarOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                const icon = mobileMenuToggle.querySelector('i');
+                icon.classList.remove('bi-x');
+                icon.classList.add('bi-list');
+            });
+
+            // Close sidebar when clicking a nav link on mobile
+            const navLinks = sidebar.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 968) {
+                        sidebar.classList.remove('active');
+                        sidebarOverlay.classList.remove('active');
+                        const icon = mobileMenuToggle.querySelector('i');
+                        icon.classList.remove('bi-x');
+                        icon.classList.add('bi-list');
+                    }
+                });
+            });
+        }
+    </script>
 
     @yield('scripts')
 </body>

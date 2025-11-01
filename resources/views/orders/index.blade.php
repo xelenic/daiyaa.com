@@ -158,16 +158,60 @@
     }
 
     @media (max-width: 768px) {
+        .orders-container {
+            padding: 2rem 0;
+        }
+
+        .order-card {
+            padding: 1.5rem;
+        }
+
         .order-header {
             flex-direction: column;
             align-items: flex-start;
             gap: 1rem;
         }
 
+        .order-number {
+            font-size: 1rem;
+        }
+
+        .order-date {
+            font-size: 0.85rem;
+        }
+
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+        }
+
+        .order-item-line {
+            flex-direction: column;
+            gap: 0.25rem;
+            align-items: flex-start;
+        }
+
         .order-footer {
             flex-direction: column;
             gap: 1rem;
             align-items: flex-start;
+        }
+
+        .order-total {
+            font-size: 1.1rem;
+        }
+
+        .btn-sm {
+            width: 100%;
+        }
+
+        .pagination {
+            flex-wrap: wrap;
+        }
+
+        .pagination a, .pagination span {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
         }
     }
 </style>

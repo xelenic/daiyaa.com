@@ -7,7 +7,7 @@
     <h2 style="color: var(--primary-gold); margin-bottom: 2rem;">Edit Menu Item</h2>
 
     <div class="card">
-        <form method="POST" action="{{ route('admin.menu-items.update', $menuItem) }}">
+        <form method="POST" action="{{ route('admin.menu-items.update', $menuItem) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -54,9 +54,40 @@
             </div>
 
             <div class="form-group">
-                <label for="image_url" class="form-label">Image URL</label>
+                <label for="image" class="form-label">Food Image</label>
+                
+                @if($menuItem->image_url)
+                    <div style="margin-bottom: 1rem;">
+                        <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Current Image:</p>
+                        <img src="{{ $menuItem->image_url }}" alt="{{ $menuItem->name }}" 
+                             style="max-width: 300px; max-height: 300px; border-radius: 10px; border: 2px solid var(--primary-gold);">
+                    </div>
+                @endif
+                
+                <input type="file" id="image" name="image" class="form-control" 
+                       accept="image/jpeg,image/png,image/jpg,image/webp" onchange="previewImage(event)">
+                <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">
+                    Upload a new image to replace the current one. Accepted formats: JPG, PNG, WEBP (Max: 2MB)
+                </small>
+                @error('image')
+                    <span style="color: var(--danger); font-size: 0.875rem;">{{ $message }}</span>
+                @enderror
+                
+                <!-- Image Preview -->
+                <div id="imagePreview" style="margin-top: 1rem; display: none;">
+                    <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">New Image Preview:</p>
+                    <img id="preview" src="" alt="Preview" 
+                         style="max-width: 300px; max-height: 300px; border-radius: 10px; border: 2px solid var(--primary-gold);">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="image_url" class="form-label">Or Image URL (Optional)</label>
                 <input type="url" id="image_url" name="image_url" class="form-control" 
                        value="{{ old('image_url', $menuItem->image_url) }}">
+                <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">
+                    Use this if you prefer to link to an external image instead of uploading
+                </small>
                 @error('image_url')
                     <span style="color: var(--danger); font-size: 0.875rem;">{{ $message }}</span>
                 @enderror
@@ -98,5 +129,26 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('preview');
+        const previewContainer = document.getElementById('imagePreview');
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                previewContainer.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            previewContainer.style.display = 'none';
+        }
+    }
+</script>
 @endsection
 

@@ -158,10 +158,39 @@
         margin-bottom: 2rem;
     }
 
+    .cart-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+    }
+
+    @media (max-width: 968px) {
+        .cart-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
     @media (max-width: 768px) {
+        .cart-container {
+            padding: 2rem 0;
+        }
+
+        .cart-items {
+            padding: 1.5rem;
+        }
+
         .cart-item {
             grid-template-columns: 80px 1fr;
             gap: 1rem;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+        }
+
+        .cart-item-details h3 {
+            font-size: 1rem;
         }
 
         .cart-item-controls {
@@ -169,6 +198,10 @@
             flex-direction: row;
             justify-content: space-between;
             width: 100%;
+        }
+
+        .cart-summary {
+            padding: 1.5rem;
         }
     }
 </style>
@@ -181,7 +214,7 @@
     </div>
 
     @if($cartItems->count() > 0)
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+        <div class="cart-grid">
             <div>
                 <div class="cart-items">
                     @foreach($cartItems as $item)

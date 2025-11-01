@@ -4,12 +4,27 @@
 
 @section('styles')
 <style>
+    body {
+        padding-top: 0 !important;
+    }
+
+    main {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer {
+        margin-top: 0 !important;
+    }
+
     .auth-container {
-        min-height: calc(100vh - 200px);
+        flex: 1;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 2rem;
+        padding-top: calc(80px + 2rem);
     }
 
     .auth-card {

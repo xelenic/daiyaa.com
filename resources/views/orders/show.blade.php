@@ -193,6 +193,52 @@
             grid-template-columns: 1fr;
         }
     }
+
+    @media (max-width: 768px) {
+        .order-details-container {
+            padding: 2rem 0;
+        }
+
+        .details-section {
+            padding: 1.5rem;
+        }
+
+        .section-heading {
+            font-size: 1.1rem;
+        }
+
+        .info-row {
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+
+        .info-value {
+            text-align: left;
+        }
+
+        .order-item {
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-start;
+        }
+
+        .item-meta {
+            font-size: 0.85rem;
+        }
+
+        .timeline {
+            padding-left: 1.5rem;
+        }
+
+        .timeline-item::before {
+            left: -1.5rem;
+        }
+
+        .timeline-item::after {
+            left: -1.2rem;
+        }
+    }
 </style>
 @endsection
 

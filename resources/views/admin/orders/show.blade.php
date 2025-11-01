@@ -2,9 +2,55 @@
 
 @section('page-title', 'Order Details')
 
+@section('styles')
+<style>
+    .admin-order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .admin-order-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .admin-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    @media (max-width: 968px) {
+        .admin-order-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .admin-info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .admin-order-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .admin-order-header .btn {
+            width: 100%;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
 <div style="max-width: 1000px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div class="admin-order-header">
         <div>
             <h2 style="color: var(--primary-gold); margin-bottom: 0.5rem;">Order #{{ $order->order_number }}</h2>
             <p style="color: var(--text-secondary);">{{ $order->created_at->format('F d, Y \a\t h:i A') }}</p>
@@ -14,7 +60,7 @@
         </a>
     </div>
 
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+    <div class="admin-order-grid">
         <!-- Order Items -->
         <div class="card">
             <h3 style="color: var(--primary-gold); margin-bottom: 1.5rem;">Order Items</h3>
@@ -67,7 +113,7 @@
     </div>
 
     <!-- Customer & Delivery Info -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div class="admin-info-grid">
         <div class="card">
             <h3 style="color: var(--primary-gold); margin-bottom: 1.5rem;">Customer Information</h3>
             

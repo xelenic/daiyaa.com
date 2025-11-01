@@ -80,6 +80,34 @@
             grid-template-columns: 1fr;
         }
     }
+
+    @media (max-width: 768px) {
+        .checkout-container {
+            padding: 2rem 0;
+        }
+
+        .checkout-section {
+            padding: 1.5rem;
+        }
+
+        .section-heading {
+            font-size: 1.2rem;
+        }
+
+        .checkout-section > div[style*="grid-template-columns"] {
+            grid-template-columns: 1fr !important;
+        }
+
+        .order-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .item-price {
+            margin-top: 0.5rem;
+        }
+    }
 </style>
 @endsection
 
