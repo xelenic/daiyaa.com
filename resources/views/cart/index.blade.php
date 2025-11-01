@@ -219,7 +219,10 @@
                 <div class="cart-items">
                     @foreach($cartItems as $item)
                         <div class="cart-item" data-cart-id="{{ $item->id }}">
-                            <img src="{{ $item->menuItem->image_url }}" alt="{{ $item->menuItem->name }}" class="cart-item-image">
+                            <img src="{{ $item->menuItem->image_path ?? 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80' }}" 
+                                 alt="{{ $item->menuItem->name }}" 
+                                 class="cart-item-image"
+                                 onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80';">
                             
                             <div class="cart-item-details">
                                 <h3>{{ $item->menuItem->name }}</h3>

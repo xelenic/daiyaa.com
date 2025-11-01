@@ -215,7 +215,12 @@
         <div class="menu-grid">
             @foreach($menuItems as $item)
                 <div class="menu-card">
-                    <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                    @if($item->image_url)
+                        <img src="{{ $item->image_path }}" alt="{{ $item->name }}" 
+                             onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80';">
+                    @else
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80" alt="{{ $item->name }}">
+                    @endif
                     <div class="menu-info">
                         <div class="menu-category">
                             <i class="bi bi-tag"></i> {{ $item->category->name }}

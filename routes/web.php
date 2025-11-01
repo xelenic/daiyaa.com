@@ -66,6 +66,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('promotions', PromotionController::class);
     
     // Settings Management
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index'); // Old combined view
+    Route::get('/settings/general', [SettingController::class, 'general'])->name('settings.general');
+    Route::get('/settings/contact', [SettingController::class, 'contact'])->name('settings.contact');
+    Route::get('/settings/hours', [SettingController::class, 'hours'])->name('settings.hours');
+    Route::get('/settings/social', [SettingController::class, 'social'])->name('settings.social');
+    Route::get('/settings/seo', [SettingController::class, 'seo'])->name('settings.seo');
+    Route::get('/settings/delivery', [SettingController::class, 'delivery'])->name('settings.delivery');
+    Route::get('/settings/email', [SettingController::class, 'email'])->name('settings.email');
+    Route::get('/settings/features', [SettingController::class, 'features'])->name('settings.features');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
 });

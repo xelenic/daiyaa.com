@@ -27,11 +27,15 @@
                 <tr>
                     <td>
                         @if($item->image_url)
-                            <img src="{{ $item->image_url }}" alt="{{ $item->name }}" 
-                                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                            <img src="{{ $item->image_path }}" alt="{{ $item->name }}" 
+                                 style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.2);"
+                                 onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div style="width: 60px; height: 60px; background: var(--darker-bg); border-radius: 8px; display: none; align-items: center; justify-content: center; border: 1px solid rgba(212, 175, 55, 0.2);">
+                                <i class="bi bi-image-fill" style="color: var(--text-secondary);"></i>
+                            </div>
                         @else
-                            <div style="width: 60px; height: 60px; background: var(--darker-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                                <i class="bi bi-image" style="color: var(--text-secondary);"></i>
+                            <div style="width: 60px; height: 60px; background: var(--darker-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(212, 175, 55, 0.2);">
+                                <i class="bi bi-image-fill" style="color: var(--text-secondary);"></i>
                             </div>
                         @endif
                     </td>

@@ -48,5 +48,32 @@ class MenuItem extends Model
     {
         return 'Rs. ' . number_format($this->price, 2);
     }
+
+    public function getImagePathAttribute(): ?string
+    {
+        $value = $this->attributes['image_url'] ?? null;
+        
+        if (!$value) {
+            return null;
+        }
+
+        // If it's already a full URL, return as is
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
+        }
+
+        // If it starts with /storage/, return as is
+        if (str_starts_with($value, '/storage/')) {
+            return $value;
+        }
+
+        // If it's a path without /storage/, add it
+        if (str_starts_with($value, 'menu-items/') || str_starts_with($value, 'images/')) {
+            return '/storage/' . $value;
+        }
+
+        // Default: assume it needs /storage/ prefix
+        return '/storage/' . $value;
+    }
 }
 

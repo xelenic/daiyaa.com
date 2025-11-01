@@ -73,6 +73,28 @@
 
         .sidebar-nav {
             padding: 1rem 0;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        .sidebar-nav::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 10px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.5);
         }
 
         .nav-item {
@@ -98,6 +120,79 @@
 
         .nav-link i {
             font-size: 1.2rem;
+        }
+
+        /* Submenu Styles */
+        .has-submenu {
+            position: relative;
+        }
+
+        .has-submenu > .nav-link {
+            justify-content: space-between;
+        }
+
+        .submenu-arrow {
+            margin-left: auto;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        .has-submenu > .nav-link:hover .submenu-arrow,
+        .has-submenu > .nav-link.active .submenu-arrow {
+            color: var(--primary-gold);
+        }
+
+        .has-submenu.open > .nav-link .submenu-arrow {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(5, 5, 5, 0.5);
+        }
+
+        .submenu.show {
+            max-height: 600px;
+        }
+
+        .submenu li {
+            list-style: none;
+        }
+
+        .submenu-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 2rem 0.875rem 2.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .submenu-link:hover,
+        .submenu-link.active {
+            background: rgba(212, 175, 55, 0.08);
+            color: var(--primary-gold);
+            border-left-color: var(--primary-gold);
+        }
+
+        .submenu-link i {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu-link.active {
+            font-weight: 600;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.12), transparent);
         }
 
         /* Main Content */
@@ -311,6 +406,7 @@
 
             .topbar {
                 padding-left: 4rem;
+                padding-right: 1rem;
             }
 
             .page-title {
@@ -321,14 +417,50 @@
                 padding: 1.5rem;
             }
 
+            /* Table Responsive */
             .table {
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
             }
 
+            .table th,
+            .table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            /* Card Responsive */
             .card {
                 padding: 1.5rem;
+                border-radius: 10px;
+            }
+
+            /* Button Groups */
+            .btn {
+                padding: 0.65rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .btn-sm {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            /* Form Elements */
+            .form-group {
+                margin-bottom: 1.25rem;
+            }
+
+            .form-control {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            /* Settings Layout */
+            [style*="max-width: 1000px"] {
+                max-width: 100% !important;
+                padding: 0 1rem;
             }
         }
 
@@ -337,10 +469,158 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1rem;
+                padding-left: 3.5rem;
+            }
+
+            .user-menu {
+                width: 100%;
             }
 
             .container-admin {
                 padding: 1rem;
+            }
+
+            /* Mobile Friendly Buttons */
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .btn-sm {
+                width: auto;
+                display: inline-block;
+            }
+
+            /* Form Improvements */
+            .form-label {
+                font-size: 0.95rem;
+            }
+
+            /* Table Actions */
+            .table td form {
+                display: block;
+                margin-top: 0.5rem;
+            }
+
+            .table td form button {
+                width: 100%;
+            }
+
+            /* Better spacing for page headers */
+            div[style*="justify-content: space-between"] {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 1rem;
+            }
+
+            div[style*="justify-content: space-between"] .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            .page-title {
+                font-size: 1.1rem;
+            }
+
+            .topbar {
+                padding: 1rem;
+                padding-left: 3rem;
+            }
+
+            .container-admin {
+                padding: 0.75rem;
+            }
+
+            .card {
+                padding: 1rem;
+                border-radius: 8px;
+            }
+
+            /* Ultra-compact table */
+            .table th,
+            .table td {
+                padding: 0.5rem 0.4rem;
+                font-size: 0.85rem;
+            }
+
+            /* Smaller buttons */
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .btn-sm {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            /* Mobile optimized forms */
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .form-control {
+                padding: 0.65rem 0.85rem;
+            }
+
+            /* Settings grid responsive */
+            div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Alert spacing */
+            .alert {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            /* Submenu on mobile */
+            .submenu-link {
+                padding: 0.75rem 2rem 0.75rem 2.5rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Landscape mobile */
+        @media (max-width: 968px) and (orientation: landscape) {
+            .sidebar {
+                max-height: 100vh;
+                overflow-y: auto;
+            }
+
+            .topbar {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .sidebar,
+            .topbar,
+            .mobile-menu-toggle,
+            .sidebar-overlay,
+            .btn {
+                display: none !important;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+
+            .card {
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
             }
         }
 
@@ -388,11 +668,62 @@
                     <span>Promotions</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+            <li class="nav-item has-submenu">
+                <a href="#" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" onclick="toggleSubmenu(event, this)">
                     <i class="bi bi-gear-fill"></i>
                     <span>Settings</span>
+                    <i class="bi bi-chevron-down submenu-arrow"></i>
                 </a>
+                <ul class="submenu {{ request()->routeIs('admin.settings.*') ? 'show' : '' }}">
+                    <li>
+                        <a href="{{ route('admin.settings.general') }}" class="submenu-link {{ request()->routeIs('admin.settings.general') ? 'active' : '' }}">
+                            <i class="bi bi-house-fill"></i>
+                            <span>General</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.settings.contact') }}" class="submenu-link {{ request()->routeIs('admin.settings.contact') ? 'active' : '' }}">
+                            <i class="bi bi-telephone-fill"></i>
+                            <span>Contact Info</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.settings.hours') }}" class="submenu-link {{ request()->routeIs('admin.settings.hours') ? 'active' : '' }}">
+                            <i class="bi bi-clock-fill"></i>
+                            <span>Business Hours</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.settings.social') }}" class="submenu-link {{ request()->routeIs('admin.settings.social') ? 'active' : '' }}">
+                            <i class="bi bi-share-fill"></i>
+                            <span>Social Media</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.settings.seo') }}" class="submenu-link {{ request()->routeIs('admin.settings.seo') ? 'active' : '' }}">
+                            <i class="bi bi-search"></i>
+                            <span>SEO Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.settings.delivery') }}" class="submenu-link {{ request()->routeIs('admin.settings.delivery') ? 'active' : '' }}">
+                            <i class="bi bi-truck"></i>
+                            <span>Delivery & Payment</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.settings.email') }}" class="submenu-link {{ request()->routeIs('admin.settings.email') ? 'active' : '' }}">
+                            <i class="bi bi-envelope-fill"></i>
+                            <span>Email Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.settings.features') }}" class="submenu-link {{ request()->routeIs('admin.settings.features') ? 'active' : '' }}">
+                            <i class="bi bi-toggles"></i>
+                            <span>Features</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item">
                 <a href="{{ route('menu.index') }}" class="nav-link">
@@ -440,6 +771,17 @@
     </div>
 
     <script>
+        // Submenu toggle function
+        function toggleSubmenu(event, element) {
+            event.preventDefault();
+            const parentLi = element.closest('.has-submenu');
+            const submenu = parentLi.querySelector('.submenu');
+            
+            // Toggle the submenu
+            submenu.classList.toggle('show');
+            parentLi.classList.toggle('open');
+        }
+
         // Mobile menu toggle
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const sidebar = document.getElementById('sidebar');
@@ -469,8 +811,8 @@
                 icon.classList.add('bi-list');
             });
 
-            // Close sidebar when clicking a nav link on mobile
-            const navLinks = sidebar.querySelectorAll('.nav-link');
+            // Close sidebar when clicking a nav link on mobile (excluding submenu toggle)
+            const navLinks = sidebar.querySelectorAll('.nav-link:not(.has-submenu > .nav-link)');
             navLinks.forEach(link => {
                 link.addEventListener('click', function() {
                     if (window.innerWidth <= 968) {
