@@ -383,6 +383,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="{{ route('admin.promotions.index') }}" class="nav-link {{ request()->routeIs('admin.promotions.*') ? 'active' : '' }}">
+                    <i class="bi bi-gift"></i>
+                    <span>Promotions</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ route('menu.index') }}" class="nav-link">
                     <i class="bi bi-globe"></i>
                     <span>View Website</span>

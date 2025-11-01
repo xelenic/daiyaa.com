@@ -9,10 +9,13 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuItemController as AdminMenuItemController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\PromotionController;
 
 // Public Routes
 Route::get('/', function () {
-    return view('welcome');
+    // Get all active promotions (without date filtering for now)
+    $promotions = \App\Models\Promotion::where('is_active', true)->orderBy('sort_order')->get();
+    return view('welcome', compact('promotions'));
 })->name('home');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
@@ -49,12 +52,15 @@ Route::middleware('auth')->group(function () {
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // Menu Items Management
     Route::resource('menu-items', AdminMenuItemController::class);
-    
+
     // Orders Management
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
+
+    // Promotions Management
+    Route::resource('promotions', PromotionController::class);
 });

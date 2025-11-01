@@ -789,7 +789,457 @@
         </p>
     </footer>
 
+    <!-- Promotional Modal -->
+    <!-- Debug: Promotions count = {{ isset($promotions) ? $promotions->count() : 'NOT SET' }} -->
+    @if(isset($promotions) && $promotions->count() > 0)
+    <!-- Fireworks Canvas - Full Screen Background -->
+    <canvas id="fireworksCanvas"></canvas>
+    
+    <div id="promoModal" class="promo-modal">
+        <div class="promo-modal-content">
+            <span class="promo-close">&times;</span>
+            
+            <div class="promo-slider">
+                @foreach($promotions as $index => $promotion)
+                <div class="promo-slide {{ $index === 0 ? 'active' : '' }}">
+                    @if($promotion->image_url)
+                        <img src="{{ $promotion->image_url }}" alt="{{ $promotion->title }}" class="promo-image">
+                    @endif
+                    <div class="promo-content">
+                        <h2 class="promo-title">{{ $promotion->title }}</h2>
+                        @if($promotion->description)
+                            <p class="promo-description">{{ $promotion->description }}</p>
+                        @endif
+                        <a href="{{ route('menu.index') }}" class="promo-btn">Order Now</a>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            @if($promotions->count() > 1)
+            <div class="promo-dots">
+                @foreach($promotions as $index => $promotion)
+                <span class="dot {{ $index === 0 ? 'active' : '' }}" onclick="currentSlide({{ $index }})"></span>
+                @endforeach
+            </div>
+            @endif
+        </div>
+    </div>
+
+    <style>
+        /* Modal Styles */
+        .promo-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5) !important;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            animation: fadeIn 0.5s;
+        }
+
+        .promo-modal-content {
+            position: relative;
+            background: rgba(10, 10, 10, 0.95) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            margin: 8% auto;
+            padding: 0;
+            border: 2px solid var(--primary-gold);
+            border-radius: 15px;
+            width: 85%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+            animation: slideDown 0.5s;
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        .promo-close {
+            color: var(--primary-gold);
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            z-index: 101;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .promo-close:hover,
+        .promo-close:focus {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .promo-slide {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .promo-slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .promo-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .promo-content {
+            padding: 0.5rem 1rem 1rem;
+        }
+
+        .promo-title {
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            margin-bottom: 0.5rem;
+            font-family: 'Playfair Display', serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            animation: pulse 2s infinite;
+        }
+
+        .promo-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .promo-btn {
+            display: inline-block;
+            padding: 0.6rem 2rem;
+            background: var(--primary-gold);
+            color: var(--dark-bg);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .promo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.6);
+            background: #fff;
+        }
+
+        .promo-dots {
+            text-align: center;
+            padding: 0.5rem 0;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 10px;
+            width: 10px;
+            margin: 0 4px;
+            background-color: rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active,
+        .dot:hover {
+            background-color: var(--primary-gold);
+            transform: scale(1.2);
+        }
+
+        /* Fireworks Canvas - Full Screen */
+        #fireworksCanvas {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .promo-modal-content {
+                width: 92%;
+                margin: 15% auto;
+                max-width: 400px;
+            }
+
+            .promo-title {
+                font-size: 1.5rem;
+            }
+
+            .promo-description {
+                font-size: 0.85rem;
+            }
+
+            .promo-image {
+                max-height: 180px;
+            }
+
+            .promo-btn {
+                padding: 0.5rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .promo-close {
+                font-size: 24px;
+                top: 8px;
+                right: 12px;
+            }
+        }
+    </style>
+
     <script>
+        // Modal functionality
+        const modal = document.getElementById('promoModal');
+        const closeBtn = document.getElementsByClassName('promo-close')[0];
+        let slideIndex = 0;
+        let autoSlideInterval;
+
+        console.log('Promo Modal Element:', modal); // Debug
+
+        // Show modal on page load after a short delay
+        window.addEventListener('load', function() {
+            console.log('Page loaded, checking for modal...'); // Debug
+            setTimeout(() => {
+                if (modal) {
+                    console.log('Modal found! Showing modal...'); // Debug
+                    modal.style.display = 'block';
+                    const canvas = document.getElementById('fireworksCanvas');
+                    if (canvas) {
+                        canvas.style.display = 'block';
+                    }
+                    initFireworks();
+                    if (document.querySelectorAll('.promo-slide').length > 1) {
+                        startAutoSlide();
+                    }
+                } else {
+                    console.log('Modal element not found!'); // Debug
+                }
+            }, 500);
+        });
+
+        // Close modal
+        if (closeBtn) {
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+                const canvas = document.getElementById('fireworksCanvas');
+                if (canvas) {
+                    canvas.style.display = 'none';
+                }
+                stopFireworks();
+                if (autoSlideInterval) {
+                    clearInterval(autoSlideInterval);
+                }
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                const canvas = document.getElementById('fireworksCanvas');
+                if (canvas) {
+                    canvas.style.display = 'none';
+                }
+                stopFireworks();
+                if (autoSlideInterval) {
+                    clearInterval(autoSlideInterval);
+                }
+            }
+        }
+
+        // Slide functionality
+        function currentSlide(n) {
+            showSlide(slideIndex = n);
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                startAutoSlide();
+            }
+        }
+
+        function showSlide(n) {
+            let slides = document.getElementsByClassName('promo-slide');
+            let dots = document.getElementsByClassName('dot');
+            
+            if (slides.length === 0) return;
+            
+            if (n >= slides.length) { slideIndex = 0 }
+            if (n < 0) { slideIndex = slides.length - 1 }
+            
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].classList.remove('active');
+            }
+            
+            slides[slideIndex].classList.add('active');
+            if (dots[slideIndex]) {
+                dots[slideIndex].classList.add('active');
+            }
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                slideIndex++;
+                showSlide(slideIndex);
+            }, 5000);
+        }
+
+        // Fireworks animation
+        let canvas, ctx, fireworks = [], particles = [], animationId;
+
+        function initFireworks() {
+            canvas = document.getElementById('fireworksCanvas');
+            if (!canvas) return;
+            
+            ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+            
+            // Create fireworks periodically
+            setInterval(createFirework, 800);
+            animateFireworks();
+        }
+
+        function createFirework() {
+            if (!canvas) return;
+            
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height * 0.5;
+            const targetY = y;
+            const firework = {
+                x: x,
+                y: canvas.height,
+                targetY: targetY,
+                speed: 3 + Math.random() * 2,
+                hue: Math.random() * 360
+            };
+            fireworks.push(firework);
+        }
+
+        function createParticles(x, y, hue) {
+            const particleCount = 50;
+            for (let i = 0; i < particleCount; i++) {
+                const angle = (Math.PI * 2 * i) / particleCount;
+                const velocity = 2 + Math.random() * 3;
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * velocity,
+                    vy: Math.sin(angle) * velocity,
+                    alpha: 1,
+                    hue: hue + Math.random() * 30
+                });
+            }
+        }
+
+        function animateFireworks() {
+            if (!ctx || !canvas) return;
+            
+            // Clear canvas with transparency (not black)
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Update fireworks
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                const fw = fireworks[i];
+                fw.y -= fw.speed;
+                
+                ctx.beginPath();
+                ctx.arc(fw.x, fw.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = `hsl(${fw.hue}, 100%, 50%)`;
+                ctx.fill();
+                
+                // Add glow effect
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = `hsl(${fw.hue}, 100%, 50%)`;
+                
+                if (fw.y <= fw.targetY) {
+                    createParticles(fw.x, fw.y, fw.hue);
+                    fireworks.splice(i, 1);
+                }
+            }
+            
+            // Update particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.1; // gravity
+                p.alpha -= 0.015;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${p.hue}, 100%, 50%, ${p.alpha})`;
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = `hsla(${p.hue}, 100%, 50%, ${p.alpha})`;
+                ctx.fill();
+                
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+            
+            // Reset shadow
+            ctx.shadowBlur = 0;
+            
+            animationId = requestAnimationFrame(animateFireworks);
+        }
+
+        function stopFireworks() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            fireworks = [];
+            particles = [];
+        }
+
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -807,5 +1257,6 @@
             });
         });
     </script>
+    @endif
 </body>
 </html>
