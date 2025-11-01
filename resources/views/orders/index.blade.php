@@ -250,7 +250,10 @@
 
                 <div class="order-footer">
                     <div class="order-total">
-                        Total: Rs. {{ number_format($order->total_amount, 2) }}
+                        Total: Rs. {{ number_format($order->grand_total, 2) }}
+                        @if($order->delivery_fee > 0)
+                            <small style="color: var(--text-secondary); font-size: 0.85rem;">(incl. Rs. {{ number_format($order->delivery_fee, 2) }} delivery)</small>
+                        @endif
                     </div>
                     <a href="{{ route('orders.show', $order) }}" class="btn btn-sm">
                         <i class="bi bi-eye"></i> View Details

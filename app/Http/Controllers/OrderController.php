@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\DeliveryZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -67,11 +68,26 @@ class OrderController extends Controller
                 return $item->quantity * $item->menuItem->price;
             });
 
+            // Find delivery zone and calculate delivery fee
+            $deliveryZone = DeliveryZone::findForLocation(
+                $validated['delivery_city'],
+                $validated['delivery_postal_code'] ?? null
+            );
+
+            if (!$deliveryZone) {
+                return redirect()->route('orders.checkout')
+                    ->with('error', 'Sorry, we do not deliver to your location at this time. Please contact us for more information.');
+            }
+
+            $deliveryFee = $deliveryZone->calculateFee($total);
+
             // Create order
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'order_number' => Order::generateOrderNumber(),
                 'total_amount' => $total,
+                'delivery_fee' => $deliveryFee,
+                'delivery_zone_id' => $deliveryZone->id,
                 'status' => 'pending',
                 'payment_method' => 'cash_on_delivery',
                 'customer_name' => $validated['customer_name'],

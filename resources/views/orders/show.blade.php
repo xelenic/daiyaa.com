@@ -272,9 +272,29 @@
                     </div>
                 @endforeach
 
-                <div class="info-row" style="font-size: 1.2rem; font-weight: 700; color: var(--primary-gold); padding-top: 1.5rem;">
-                    <span>Total</span>
+                <div class="info-row" style="font-weight: 600; padding-top: 1rem;">
+                    <span>Subtotal</span>
                     <span>Rs. {{ number_format($order->total_amount, 2) }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span>Delivery Fee
+                        @if($order->deliveryZone)
+                            <small style="color: var(--text-secondary); font-weight: 400;">({{ $order->deliveryZone->name }})</small>
+                        @endif
+                    </span>
+                    <span style="{{ $order->delivery_fee == 0 ? 'color: var(--success);' : '' }}">
+                        @if($order->delivery_fee == 0)
+                            FREE
+                        @else
+                            Rs. {{ number_format($order->delivery_fee, 2) }}
+                        @endif
+                    </span>
+                </div>
+
+                <div class="info-row" style="font-size: 1.2rem; font-weight: 700; color: var(--primary-gold); padding-top: 1rem; border-top: 2px solid rgba(212, 175, 55, 0.3);">
+                    <span>Grand Total</span>
+                    <span>Rs. {{ number_format($order->grand_total, 2) }}</span>
                 </div>
             </div>
 

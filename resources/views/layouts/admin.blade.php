@@ -668,6 +668,12 @@
                     <span>Promotions</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.delivery-zones.index') }}" class="nav-link {{ request()->routeIs('admin.delivery-zones.*') ? 'active' : '' }}">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>Delivery Zones</span>
+                </a>
+            </li>
             <li class="nav-item has-submenu">
                 <a href="#" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" onclick="toggleSubmenu(event, this)">
                     <i class="bi bi-gear-fill"></i>

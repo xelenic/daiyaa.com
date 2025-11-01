@@ -15,6 +15,8 @@ class Order extends Model
         'user_id',
         'order_number',
         'total_amount',
+        'delivery_fee',
+        'delivery_zone_id',
         'status',
         'payment_method',
         'customer_name',
@@ -29,6 +31,7 @@ class Order extends Model
 
     protected $casts = [
         'total_amount' => 'decimal:2',
+        'delivery_fee' => 'decimal:2',
         'confirmed_at' => 'datetime',
         'delivered_at' => 'datetime',
     ];
@@ -41,6 +44,19 @@ class Order extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function deliveryZone(): BelongsTo
+    {
+        return $this->belongsTo(DeliveryZone::class);
+    }
+
+    /**
+     * Get grand total including delivery fee
+     */
+    public function getGrandTotalAttribute(): float
+    {
+        return (float) $this->total_amount + (float) $this->delivery_fee;
     }
 
     public function getStatusBadgeAttribute(): string

@@ -64,7 +64,12 @@
                     </td>
                     <td>{{ $order->created_at->format('M d, Y h:i A') }}</td>
                     <td>{{ $order->orderItems->count() }} items</td>
-                    <td style="color: var(--primary-gold); font-weight: 600;">Rs. {{ number_format($order->total_amount, 2) }}</td>
+                    <td style="color: var(--primary-gold); font-weight: 600;">
+                        Rs. {{ number_format($order->grand_total, 2) }}
+                        @if($order->delivery_fee > 0)
+                            <br><small style="color: var(--text-secondary); font-weight: 400;">+Rs. {{ number_format($order->delivery_fee, 2) }} delivery</small>
+                        @endif
+                    </td>
                     <td>
                         <span style="text-transform: capitalize;">{{ str_replace('_', ' ', $order->status) }}</span>
                     </td>

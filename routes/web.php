@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\MenuItemController as AdminMenuItemController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\DeliveryZoneController;
 
 // Public Routes
 Route::get('/', function () {
@@ -64,6 +65,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Promotions Management
     Route::resource('promotions', PromotionController::class);
+    
+    // Delivery Zones Management
+    Route::resource('delivery-zones', DeliveryZoneController::class);
+    Route::post('/delivery-zones/calculate-fee', [DeliveryZoneController::class, 'calculateFee'])->name('delivery-zones.calculate-fee');
     
     // Settings Management
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index'); // Old combined view
