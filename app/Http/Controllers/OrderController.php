@@ -75,7 +75,7 @@ class OrderController extends Controller
             );
 
             if (!$deliveryZone) {
-                return redirect()->route('orders.checkout')
+                return redirect()->route('checkout')
                     ->with('error', 'Sorry, we do not deliver to your location at this time. Please contact us for more information.');
             }
 
@@ -120,8 +120,15 @@ class OrderController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('cart.index')
-                ->with('error', 'Failed to place order. Please try again.');
+            \Log::error('Order creation failed: ' . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString(),
+                'user_id' => Auth::id(),
+                'request_data' => $validated
+            ]);
+            return redirect()->route('checkout')
+                ->withInput()
+                ->with('error', 'Failed to place order. Please try again. If the problem persists, please contact us.');
         }
     }
 }

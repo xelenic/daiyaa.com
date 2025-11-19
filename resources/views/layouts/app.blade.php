@@ -312,7 +312,7 @@
     <footer class="footer">
         @if(setting('site_logo'))
             <div style="margin-bottom: 1rem;">
-                <img src="{{ setting('site_logo') }}" alt="{{ setting('site_name') }}" style="max-height: 60px;">
+                <img src="{{ setting('site_logo') }}" alt="{{ setting('site_name', 'Daiyaa') }}" style="max-height: 80px; width: auto; object-fit: contain;">
             </div>
         @else
             <div class="logo" style="font-size: 2rem; margin-bottom: 1rem;">{{ strtoupper(setting('site_name', 'DAIYAA')) }}</div>
@@ -332,7 +332,15 @@
                     {{ setting('contact_phone') }}
                 </a>
             @endif
-            @if(setting('contact_phone') && setting('contact_email'))
+            @if(setting('contact_phone') && (setting('contact_email') || setting('contact_email_support')))
+                |
+            @endif
+            @if(setting('contact_email_support'))
+                <a href="mailto:{{ setting('contact_email_support') }}" style="color: var(--primary-gold); text-decoration: none;">
+                    {{ setting('contact_email_support') }}
+                </a>
+            @endif
+            @if(setting('contact_email_support') && setting('contact_email'))
                 |
             @endif
             @if(setting('contact_email'))

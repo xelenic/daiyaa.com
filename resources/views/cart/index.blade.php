@@ -256,9 +256,14 @@
                         <span id="cart-total">Rs. {{ number_format($total, 2) }}</span>
                     </div>
                     
-                    <div class="summary-row">
-                        <span>Delivery</span>
-                        <span style="color: var(--success);">FREE</span>
+                    <div class="summary-row" style="flex-direction: column; align-items: stretch; padding: 1rem 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <span>Delivery Fee</span>
+                            <span style="color: var(--text-secondary); font-size: 0.9rem;">Calculated at checkout</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: right; padding-right: 0;">
+                            per km Rs.80 adding for delivery charged
+                        </div>
                     </div>
 
                     <div class="summary-row">

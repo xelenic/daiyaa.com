@@ -33,6 +33,14 @@
         font-family: 'Playfair Display', serif;
         letter-spacing: 2px;
         text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .logo img {
+        max-height: 50px;
+        width: auto;
+        object-fit: contain;
     }
 
     .nav-links {
@@ -146,12 +154,22 @@
         .logo {
             font-size: 1.5rem;
         }
+
+        .logo img {
+            max-height: 40px;
+        }
     }
 </style>
 
 <nav class="navbar" id="navbar">
     <div class="nav-container">
-        <a href="{{ route('home') }}" class="logo">DAIYAA</a>
+        <a href="{{ route('home') }}" class="logo">
+            @if(setting('site_logo'))
+                <img src="{{ setting('site_logo') }}" alt="{{ setting('site_name', 'Daiyaa') }}">
+            @else
+                DAIYAA
+            @endif
+        </a>
         <button class="mobile-menu-toggle" id="mobileMenuToggle">
             <i class="bi bi-list"></i>
         </button>

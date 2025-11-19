@@ -235,24 +235,23 @@
                         <span>Rs. {{ number_format($total, 2) }}</span>
                     </div>
 
-                    <div class="order-item" id="delivery-fee-row">
-                        <span>
-                            Delivery Fee
-                            <span id="delivery-zone-name" style="display: none; font-size: 0.8rem; color: var(--text-secondary);"></span>
-                        </span>
-                        <span id="delivery-fee-amount">
-                            <span style="color: var(--text-secondary); font-size: 0.9rem;">Enter location</span>
-                        </span>
-                    </div>
-
-                    <div id="delivery-info" style="display: none; padding: 1rem; background: rgba(23, 162, 184, 0.1); border-radius: 8px; margin: 1rem 0; font-size: 0.9rem; color: var(--info);">
-                        <i class="bi bi-info-circle"></i> <span id="delivery-message"></span>
+                    <div class="order-item" id="delivery-fee-row" style="display: flex; flex-direction: column; align-items: stretch; padding: 1rem 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <span>Delivery Fee</span>
+                            <span style="color: var(--text-secondary); font-size: 0.9rem;">Calculated at checkout</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: right; padding-right: 0;">
+                            per km Rs.80 adding for delivery charged
+                        </div>
                     </div>
 
                     <div class="order-item" style="font-size: 1.3rem; color: var(--primary-gold); font-weight: 700; padding-top: 1.5rem;">
-                        <span>Total</span>
+                        <span>Subtotal</span>
                         <span id="grand-total">Rs. {{ number_format($total, 2) }}</span>
                     </div>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: center;">
+                        <i class="bi bi-info-circle"></i> Delivery fee will be calculated and added to your order
+                    </p>
 
                     <button type="submit" class="btn" style="width: 100%; margin-top: 2rem;">
                         <i class="bi bi-check-circle"></i> Place Order
@@ -271,110 +270,10 @@
 @section('scripts')
 <script>
     const subtotal = {{ $total }};
-    let deliveryFee = 0;
-    let deliveryZoneId = null;
-
-    // Function to calculate delivery fee
-    async function calculateDeliveryFee() {
-        const city = document.getElementById('delivery_city').value;
-        const postalCode = document.getElementById('delivery_postal_code').value;
-
-        if (!city) {
-            resetDeliveryInfo();
-            return;
-        }
-
-        try {
-            const response = await fetch('{{ route("admin.delivery-zones.calculate-fee") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    city: city,
-                    postal_code: postalCode,
-                    order_amount: subtotal
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                deliveryFee = data.delivery_fee;
-                deliveryZoneId = data.zone_id;
-                
-                // Update delivery fee display
-                const feeRow = document.getElementById('delivery-fee-row');
-                const feeAmount = document.getElementById('delivery-fee-amount');
-                const zoneName = document.getElementById('delivery-zone-name');
-                const deliveryInfo = document.getElementById('delivery-info');
-                const deliveryMessage = document.getElementById('delivery-message');
-                
-                zoneName.textContent = `(${data.zone_name})`;
-                zoneName.style.display = 'inline';
-                
-                if (data.is_free_delivery) {
-                    feeAmount.innerHTML = '<span style="color: var(--success); font-weight: 600;">FREE</span>';
-                    deliveryMessage.textContent = `Free delivery! Your order meets the minimum amount of Rs. ${data.min_order_amount.toLocaleString()}.`;
-                } else {
-                    feeAmount.innerHTML = `<span style="color: var(--primary-gold); font-weight: 600;">Rs. ${deliveryFee.toFixed(2)}</span>`;
-                    if (data.min_order_amount > 0) {
-                        const remaining = data.min_order_amount - subtotal;
-                        deliveryMessage.textContent = `Add Rs. ${remaining.toFixed(2)} more to get FREE delivery!`;
-                    } else {
-                        deliveryMessage.textContent = `Estimated delivery time: ${data.estimated_time} minutes`;
-                    }
-                }
-                
-                deliveryInfo.style.display = 'block';
-                
-                // Update grand total
-                updateGrandTotal();
-            } else {
-                showDeliveryError(data.message);
-            }
-        } catch (error) {
-            console.error('Error calculating delivery fee:', error);
-            showDeliveryError('Unable to calculate delivery fee. Please try again.');
-        }
-    }
-
-    function resetDeliveryInfo() {
-        deliveryFee = 0;
-        deliveryZoneId = null;
-        document.getElementById('delivery-fee-amount').innerHTML = '<span style="color: var(--text-secondary); font-size: 0.9rem;">Enter location</span>';
-        document.getElementById('delivery-zone-name').style.display = 'none';
-        document.getElementById('delivery-info').style.display = 'none';
-        updateGrandTotal();
-    }
-
-    function showDeliveryError(message) {
-        const feeAmount = document.getElementById('delivery-fee-amount');
-        const deliveryInfo = document.getElementById('delivery-info');
-        const deliveryMessage = document.getElementById('delivery-message');
-        
-        feeAmount.innerHTML = '<span style="color: var(--danger); font-weight: 600;">N/A</span>';
-        deliveryInfo.style.display = 'block';
-        deliveryInfo.style.background = 'rgba(220, 53, 69, 0.1)';
-        deliveryInfo.style.color = 'var(--danger)';
-        deliveryInfo.style.borderLeft = '4px solid var(--danger)';
-        deliveryMessage.textContent = message;
-    }
-
-    function updateGrandTotal() {
-        const grandTotal = subtotal + deliveryFee;
-        document.getElementById('grand-total').textContent = `Rs. ${grandTotal.toFixed(2)}`;
-    }
-
-    // Attach event listeners
-    document.getElementById('delivery_city').addEventListener('blur', calculateDeliveryFee);
-    document.getElementById('delivery_postal_code').addEventListener('blur', calculateDeliveryFee);
     
-    // Calculate on page load if city is already filled
-    if (document.getElementById('delivery_city').value) {
-        calculateDeliveryFee();
-    }
+    // No dynamic calculation - delivery fee will be calculated on server side during order processing
+    // Grand total shows subtotal only (delivery fee added on server)
+    document.getElementById('grand-total').textContent = `Rs. ${subtotal.toFixed(2)}`;
 </script>
 @endsection
 

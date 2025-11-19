@@ -118,9 +118,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),
-                        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&q=80') center/cover;
-            background-attachment: fixed;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7));
+            z-index: 1;
         }
 
         .hero-content {
@@ -128,6 +146,7 @@
             z-index: 2;
             max-width: 900px;
             padding: 2rem;
+            position: relative;
         }
 
         .hero h1 {
@@ -137,6 +156,22 @@
             color: var(--primary-gold);
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
             letter-spacing: 3px;
+        }
+
+        .hero-logo {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-logo img {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.8));
+            animation: zoom-in 1s ease-out;
         }
 
         .hero-subtitle {
@@ -525,6 +560,10 @@
                 font-size: 3rem;
             }
 
+            .hero-logo img {
+                max-width: 250px;
+            }
+
             .hero-subtitle {
                 font-size: 1rem;
             }
@@ -571,12 +610,23 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="/hero1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
             <p class="hero-subtitle fade-in-down">Welcome To</p>
-            <h1 class="zoom-in delay-200">DAIYAA</h1>
+            @if(setting('site_logo'))
+                <div class="hero-logo zoom-in delay-200">
+                    <img src="{{ setting('site_logo') }}" alt="{{ setting('site_name', 'Daiyaa') }}">
+                </div>
+            @else
+                <h1 class="zoom-in delay-200">DAIYAA</h1>
+            @endif
             <div class="hero-location fade-in delay-400">
                 <i class="bi bi-geo-alt-fill"></i>
-                <span>Wellawaya City, Sri Lanka</span>
+                <span>{{ setting('contact_city', 'Wellawaya') }}{{ setting('contact_country') ? ', ' . setting('contact_country') : '' }}</span>
             </div>
             <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;" class="fade-in delay-600">
                 Experience Authentic Sri Lankan Flavors in the Heart of Wellawaya
@@ -752,7 +802,19 @@
                     <i class="bi bi-geo-alt-fill"></i>
                 </div>
                 <h3>Location</h3>
-                <p>Main Street<br>Wellawaya City<br>Sri Lanka</p>
+                <p>
+                    @if(setting('contact_address'))
+                        {{ setting('contact_address') }}<br>
+                    @endif
+                    @if(setting('contact_city'))
+                        {{ setting('contact_city') }}
+                        @if(setting('contact_postal_code'))
+                            , {{ setting('contact_postal_code') }}
+                        @endif
+                        <br>
+                    @endif
+                    {{ setting('contact_country', 'Sri Lanka') }}
+                </p>
             </div>
             <div class="contact-card fade-in delay-300">
                 <div class="contact-icon">
@@ -767,8 +829,21 @@
                 </div>
                 <h3>Contact</h3>
                 <p>
-                    <a href="tel:+94552234567">+94 55 223 4567</a><br>
-                    <a href="mailto:info@daiyaa.lk">info@daiyaa.lk</a>
+                    @if(setting('contact_phone'))
+                        <a href="tel:{{ setting('contact_phone') }}">{{ setting('contact_phone') }}</a>
+                        @if(setting('contact_phone_secondary'))
+                            <br><a href="tel:{{ setting('contact_phone_secondary') }}">{{ setting('contact_phone_secondary') }}</a>
+                        @endif
+                        <br>
+                    @endif
+                    @if(setting('contact_email_support'))
+                        <a href="mailto:{{ setting('contact_email_support') }}">{{ setting('contact_email_support') }}</a>
+                        @if(setting('contact_email'))
+                            | <a href="mailto:{{ setting('contact_email') }}">{{ setting('contact_email') }}</a>
+                        @endif
+                    @elseif(setting('contact_email'))
+                        <a href="mailto:{{ setting('contact_email') }}">{{ setting('contact_email') }}</a>
+                    @endif
                 </p>
             </div>
         </div>
@@ -776,7 +851,13 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="logo" style="font-size: 2.5rem;">DAIYAA</div>
+        @if(setting('site_logo'))
+            <div style="margin-bottom: 1rem;">
+                <img src="{{ setting('site_logo') }}" alt="{{ setting('site_name', 'Daiyaa') }}" style="max-height: 80px; width: auto; object-fit: contain;">
+            </div>
+        @else
+            <div class="logo" style="font-size: 2.5rem;">DAIYAA</div>
+        @endif
         <div class="social-links">
             <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
             <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>

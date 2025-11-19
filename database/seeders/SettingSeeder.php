@@ -39,7 +39,7 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key' => 'site_logo',
-                'value' => null,
+                'value' => '/logo.png',
                 'type' => 'image',
                 'label' => 'Website Logo',
                 'group' => 'general',
@@ -102,7 +102,7 @@ class SettingSeeder extends Seeder
             // ============================================
             [
                 'key' => 'contact_phone',
-                'value' => '+94 55 223 4567',
+                'value' => '055 727 2000',
                 'type' => 'text',
                 'label' => 'Primary Phone Number',
                 'group' => 'contact',
@@ -110,7 +110,7 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key' => 'contact_phone_secondary',
-                'value' => '+94 77 123 4567',
+                'value' => '076 486 2323',
                 'type' => 'text',
                 'label' => 'Secondary Phone Number',
                 'group' => 'contact',
@@ -118,7 +118,7 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key' => 'contact_email',
-                'value' => 'info@daiyaa.lk',
+                'value' => 'info@daiyaa.com',
                 'type' => 'text',
                 'label' => 'Primary Email Address',
                 'group' => 'contact',
@@ -126,7 +126,7 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key' => 'contact_email_support',
-                'value' => 'support@daiyaa.lk',
+                'value' => 'ruwan502324@gmail.com',
                 'type' => 'text',
                 'label' => 'Support Email Address',
                 'group' => 'contact',
@@ -142,7 +142,7 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key' => 'contact_address',
-                'value' => 'Main Street, Wellawaya City, Sri Lanka',
+                'value' => 'No.161, Monaragala Road, Wellawaya',
                 'type' => 'textarea',
                 'label' => 'Physical Address',
                 'group' => 'contact',

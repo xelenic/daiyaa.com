@@ -49,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    
+    // Delivery Fee Calculation (Public for authenticated users)
+    Route::post('/delivery-zones/calculate-fee', [DeliveryZoneController::class, 'calculateFee'])->name('delivery-zones.calculate-fee');
 });
 
 // Admin Routes

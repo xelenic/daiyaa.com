@@ -279,7 +279,13 @@
                         <strong>Secondary:</strong> <a href="tel:{{ setting('contact_phone_secondary') }}">{{ setting('contact_phone_secondary') }}</a><br>
                     @endif
                     
-                    @if(setting('contact_email'))
+                    @if(setting('contact_email_support'))
+                        <strong>Email:</strong> <a href="mailto:{{ setting('contact_email_support') }}">{{ setting('contact_email_support') }}</a>
+                        @if(setting('contact_email'))
+                            | <a href="mailto:{{ setting('contact_email') }}">{{ setting('contact_email') }}</a>
+                        @endif
+                        <br>
+                    @elseif(setting('contact_email'))
                         <strong>Email:</strong> <a href="mailto:{{ setting('contact_email') }}">{{ setting('contact_email') }}</a><br>
                     @endif
                     
